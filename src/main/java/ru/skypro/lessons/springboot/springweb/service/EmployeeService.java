@@ -9,7 +9,7 @@ public interface EmployeeService {
     /**
      * POST создавать множество новых сотрудников
      */
-    String addEmployee();
+    void addEmployee(Integer id, String name, Integer salary);
 
     /**
      * PUT редактировать сотрудника с указанным id

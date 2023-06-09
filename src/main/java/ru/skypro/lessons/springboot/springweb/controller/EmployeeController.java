@@ -25,21 +25,16 @@ public class EmployeeController {
      * POST создавать множество новых сотрудников
      */
     @GetMapping("create")
-    public String mapAddEmployee() {
-        try {
-            return employeeService.addEmployee();
-
-        } catch (Throwable t) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
+    public void mapAddEmployee(@RequestParam("id") Integer id,
+                               @RequestParam("name") String name,
+                               @RequestParam("salary") Integer salary) {
+            employeeService.addEmployee( id,  name,  salary);
     }
 
     /**
      * PUT редактировать сотрудника с указанным id
      */
 
-//    @GetMapping("{id}/{name}/{salary}")
     @GetMapping("update")
     public void mapUpdateEmployee(@RequestParam("id") Integer id,
                                   @RequestParam("name") String name,

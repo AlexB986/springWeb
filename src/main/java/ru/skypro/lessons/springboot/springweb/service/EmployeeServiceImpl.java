@@ -22,8 +22,11 @@ public class EmployeeServiceImpl implements EmployeeService {
      * POST создавать множество новых сотрудников
      */
     @Override
-    public String addEmployee() {
-        return null;
+    public void addEmployee(Integer id, String name, Integer salary) {
+        List<Employee>employeeList = employeeRepository.getAllEmployee();
+        employeeList.add(new Employee(id,name,salary));
+
+
     }
 
     /**
