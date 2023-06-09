@@ -24,7 +24,7 @@ public class EmployeeController {
     /**
      * POST создавать множество новых сотрудников
      */
-    @GetMapping("create")
+    @PostMapping("create")
     public void mapAddEmployee(@RequestParam("id") Integer id,
                                @RequestParam("name") String name,
                                @RequestParam("salary") Integer salary) {
@@ -35,17 +35,22 @@ public class EmployeeController {
      * PUT редактировать сотрудника с указанным id
      */
 
-    @GetMapping("update")
+    @PutMapping("update")
     public void mapUpdateEmployee(@RequestParam("id") Integer id,
                                   @RequestParam("name") String name,
                                   @RequestParam("salary") Integer salary) {
-        employeeService.updateByIdEmployee(id, name, salary);
+        try {
+            employeeService.updateByIdEmployee(id, name, salary);
+        }catch (Throwable t){
+            String message = "Нет такого id";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
+        }
     }
 
     /**
      * GET возвращать информацию о сотруднике с переданным id
      */
-    @GetMapping("employees-id/{id}")
+    @GetMapping("{id}")
     public String mapGetBuIdEmployee(@PathVariable int id) {
         try {
             return employeeService.getBuIdEmployee(id);
@@ -58,12 +63,13 @@ public class EmployeeController {
     /**
      * DELETE удалять сотрудника с переданным id
      */
-    @GetMapping("employee-delete/{id}")
+    @DeleteMapping("employee-delete/{id}")
     public void deleteIdEmployee(@PathVariable int id) {
         try {
             employeeService.deleteByIdEmployee(id);
         } catch (Throwable t) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            String message = "Нет такого id";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
 
         }
     }

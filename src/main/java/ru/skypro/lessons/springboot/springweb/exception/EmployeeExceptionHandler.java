@@ -10,13 +10,6 @@ import java.sql.SQLException;
 
 @RestControllerAdvice
 public class EmployeeExceptionHandler {
-    @ExceptionHandler
-    public ResponseEntity<?> handleIOException(IOException ioException) {
-        // Возвращает статус 404 (Not Found) при возникновении IOException.
-        String message = "Нет такого id";
-
-        return new ResponseEntity<>(message,HttpStatus.NOT_FOUND);
-    }
 
     @ExceptionHandler
     public ResponseEntity<?> handleSQLException(SQLException sqlException) {
@@ -28,6 +21,6 @@ public class EmployeeExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<?> handleException(Exception exception) {
         // Возвращает статус 403 (Forbidden) при возникновении Exception.
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
