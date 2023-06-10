@@ -24,7 +24,7 @@ public class EmployeeController {
     /**
      * POST создавать множество новых сотрудников
      */
-    @PostMapping("create")
+    @PostMapping()
     public void mapAddEmployee(@RequestParam("id") Integer id,
                                @RequestParam("name") String name,
                                @RequestParam("salary") Integer salary) {
@@ -35,10 +35,8 @@ public class EmployeeController {
      * PUT редактировать сотрудника с указанным id
      */
 
-    @PutMapping("update")
-    public void mapUpdateEmployee(@RequestParam("id") Integer id,
-                                  @RequestParam("name") String name,
-                                  @RequestParam("salary") Integer salary) {
+    @PutMapping("/{id}/{name}/{salary}")
+    public void mapUpdateEmployee(@PathVariable Integer id,String name, Integer salary) {
         try {
             employeeService.updateByIdEmployee(id, name, salary);
         }catch (Throwable t){
@@ -50,7 +48,7 @@ public class EmployeeController {
     /**
      * GET возвращать информацию о сотруднике с переданным id
      */
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public String mapGetBuIdEmployee(@PathVariable int id) {
         try {
             return employeeService.getBuIdEmployee(id);
@@ -63,7 +61,7 @@ public class EmployeeController {
     /**
      * DELETE удалять сотрудника с переданным id
      */
-    @DeleteMapping("employee-delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteIdEmployee(@PathVariable int id) {
         try {
             employeeService.deleteByIdEmployee(id);
@@ -77,7 +75,7 @@ public class EmployeeController {
     /**
      * GET  возвращать всех сотрудников, зарплата
      */
-    @GetMapping("high")
+    @GetMapping("salaryHigherThan?salary=")
     public List<Employee> showeHighSalarySalary(@RequestParam("salary") Integer salary) {
         return employeeService.employeeHighSalarySalary(salary);
     }

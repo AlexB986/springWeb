@@ -17,10 +17,4 @@ public class EmployeeExceptionHandler {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
-    @ExceptionHandler
-    public ResponseEntity<?> handleException(Exception exception) {
-        // Возвращает статус 403 (Forbidden) при возникновении Exception.
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
 }
