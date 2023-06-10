@@ -24,7 +24,7 @@ public class EmployeeController {
     /**
      * POST создавать множество новых сотрудников
      */
-    @PostMapping()
+    @PostMapping("/")
     public void mapAddEmployee(@RequestParam("id") Integer id,
                                @RequestParam("name") String name,
                                @RequestParam("salary") Integer salary) {
