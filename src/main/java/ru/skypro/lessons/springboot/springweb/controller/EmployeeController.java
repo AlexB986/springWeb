@@ -1,16 +1,14 @@
 package ru.skypro.lessons.springboot.springweb.controller;
 
-import jakarta.websocket.server.PathParam;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.skypro.lessons.springboot.springweb.dto.EmployeeFullInfo;
 import ru.skypro.lessons.springboot.springweb.pojo.Employee;
 import ru.skypro.lessons.springboot.springweb.service.EmployeeService;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("employees")
@@ -21,14 +19,16 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+
+
     /**
      * POST создавать множество новых сотрудников
      */
     @PostMapping("/")
     public void mapAddEmployee(@RequestParam("id") Integer id,
                                @RequestParam("name") String name,
-                               @RequestParam("salary") Integer salary) {
-            employeeService.addEmployee( id,  name,  salary);
+                               @RequestParam("salary") Integer salary){
+            employeeService.addEmployee(new Employee(id, name, salary));
     }
 
     /**
@@ -48,8 +48,8 @@ public class EmployeeController {
     /**
      * GET возвращать информацию о сотруднике с переданным id
      */
-    @GetMapping("/{id}")
-    public String mapGetBuIdEmployee(@PathVariable int id) {
+    @GetMapping("/{id}/fullinfo")
+    public Optional<Employee> mapGetBuIdEmployee(@PathVariable int id) {
         try {
             return employeeService.getBuIdEmployee(id);
         } catch (Throwable t) {
@@ -72,12 +72,30 @@ public class EmployeeController {
         }
     }
 
+////////////////*
     /**
-     * GET  возвращать всех сотрудников, зарплата
+     * GET  возвращать самой высокой зарплатой
      */
-    @GetMapping("salaryHigherThan?salary=")
-    public List<Employee> showeHighSalarySalary(@RequestParam("salary") Integer salary) {
-        return employeeService.employeeHighSalarySalary(salary);
+    @GetMapping("withHighestSalary")
+    public List<Employee> withHighestSalary(@RequestParam(value = "salary",required = false) Integer salary) {
+        return employeeService.employeeHighSalary(salary);
     }
+
+    /**
+     * GET возвращать информацию о сотруднике с переданным position
+     */
+    @GetMapping("/employees?position=")
+    public List<EmployeeFullInfo> GetBuIdEmployee(@RequestParam("position") String position) {
+//        try {
+            return employeeService.getBuPositionToEmployee(position);
+//        } catch (Throwable t) {
+//            String message = "Нет такого position";
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
+//        }
+    }
+
+    @GetMapping("/full")
+    public List<EmployeeFullInfo>getFull(){return employeeService.getFull();}
+
 
 }
