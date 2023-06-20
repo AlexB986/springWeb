@@ -51,6 +51,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeFullInfo> getBuPositionToEmployee(String role) {
         return employeeRepository.buPositionToEmployee(role);
     }
+    /**
+     * GET возвращать полную информацию о сотруднике
+     *
+     */
+    @Override
+    public List<EmployeeFullInfo> getFull() {
+        return employeeRepository.getFullEmployee();
+    }
+
 
 //    /**
 //     * GET  возвращать всех сотрудников, зарплата
@@ -138,9 +147,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     //////////////////////////////////////////*
-    @Override
-    public List<EmployeeFullInfo> getFull() {
-        return employeeRepository.getFull();
-    }
+
+
 
 }

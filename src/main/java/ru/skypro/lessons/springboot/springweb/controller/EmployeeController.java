@@ -84,16 +84,19 @@ public class EmployeeController {
     /**
      * GET возвращать информацию о сотруднике с переданным position
      */
-    @GetMapping("/employees?position=")
-    public List<EmployeeFullInfo> GetBuIdEmployee(@RequestParam("position") String position) {
-//        try {
+    @GetMapping( params = "position")
+    public List<EmployeeFullInfo> getBuIdEmployeePosition(@RequestParam("position") String position) {
+        try {
             return employeeService.getBuPositionToEmployee(position);
-//        } catch (Throwable t) {
-//            String message = "Нет такого position";
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
-//        }
+        } catch (Throwable t) {
+            String message = "Нет такого position";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
+        }
     }
-
+    /**
+     * GET возвращать полную информацию о сотруднике
+     *
+     */
     @GetMapping("/full")
     public List<EmployeeFullInfo>getFull(){return employeeService.getFull();}
 
