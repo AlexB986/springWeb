@@ -1,16 +1,14 @@
 package ru.skypro.lessons.springboot.springweb.controller;
 
-import jakarta.websocket.server.PathParam;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.skypro.lessons.springboot.springweb.dto.EmployeeFullInfo;
 import ru.skypro.lessons.springboot.springweb.pojo.Employee;
 import ru.skypro.lessons.springboot.springweb.service.EmployeeService;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("employees")
@@ -22,62 +20,56 @@ public class EmployeeController {
     }
 
     /**
-     * POST создавать множество новых сотрудников
+     * GET  возвращать самой высокой зарплатой
      */
-    @PostMapping("/")
-    public void mapAddEmployee(@RequestParam("id") Integer id,
-                               @RequestParam("name") String name,
-                               @RequestParam("salary") Integer salary) {
-            employeeService.addEmployee( id,  name,  salary);
+    @GetMapping("withHighestSalary")
+    public List<Employee> withHighestSalary(@RequestParam(value = "salary", required = false) Integer salary) {
+        return employeeService.employeeHighSalary(salary);
     }
 
     /**
-     * PUT редактировать сотрудника с указанным id
+     * GET возвращать информацию о сотруднике с переданным position
      */
-
-    @PutMapping("/{id}/{name}/{salary}")
-    public void mapUpdateEmployee(@PathVariable Integer id,String name, Integer salary) {
+    @GetMapping(params = "position")
+    public List<EmployeeFullInfo> getBuIdEmployeePosition(@RequestParam("position") String position) {
         try {
-            employeeService.updateByIdEmployee(id, name, salary);
-        }catch (Throwable t){
-            String message = "Нет такого id";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
+            return employeeService.getBuPositionToEmployee(position);
+        } catch (Throwable t) {
+            String message = "Нет такого position";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
+    }
+
+    /**
+     * GET возвращать полную информацию о сотруднике
+     */
+    @GetMapping("/full")
+    public List<EmployeeFullInfo> getFull() {
+        return employeeService.getFull();
     }
 
     /**
      * GET возвращать информацию о сотруднике с переданным id
      */
-    @GetMapping("/{id}")
-    public String mapGetBuIdEmployee(@PathVariable int id) {
+    @GetMapping("/{id}/fullinfo")
+
+    public List<EmployeeFullInfo> getBuIdEmployee(@PathVariable int id) {
         try {
-            return employeeService.getBuIdEmployee(id);
+            return employeeService.getBuIdEmployeeFull(id);
         } catch (Throwable t) {
             String message = "Нет такого id";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
     }
 
     /**
-     * DELETE удалять сотрудника с переданным id
+     * GET возвращать информацию о сотрудниках на странице.
      */
-    @DeleteMapping("/{id}")
-    public void deleteIdEmployee(@PathVariable int id) {
-        try {
-            employeeService.deleteByIdEmployee(id);
-        } catch (Throwable t) {
-            String message = "Нет такого id";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
 
-        }
-    }
-
-    /**
-     * GET  возвращать всех сотрудников, зарплата
-     */
-    @GetMapping("salaryHigherThan?salary=")
-    public List<Employee> showeHighSalarySalary(@RequestParam("salary") Integer salary) {
-        return employeeService.employeeHighSalarySalary(salary);
+    @GetMapping("/{page}")
+    public List<Employee> getEmployeesPaging(@PathVariable int page) {
+        int size = 2;
+        return employeeService.getEmployeesPaging(page, size);
     }
 
 }
