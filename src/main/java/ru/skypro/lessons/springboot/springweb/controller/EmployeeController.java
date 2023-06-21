@@ -19,86 +19,57 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-
-
-    /**
-     * POST создавать множество новых сотрудников
-     */
-    @PostMapping("/")
-    public void mapAddEmployee(@RequestParam("id") Integer id,
-                               @RequestParam("name") String name,
-                               @RequestParam("salary") Integer salary){
-            employeeService.addEmployee(new Employee(id, name, salary));
-    }
-
-    /**
-     * PUT редактировать сотрудника с указанным id
-     */
-
-    @PutMapping("/{id}/{name}/{salary}")
-    public void mapUpdateEmployee(@PathVariable Integer id,String name, Integer salary) {
-        try {
-            employeeService.updateByIdEmployee(id, name, salary);
-        }catch (Throwable t){
-            String message = "Нет такого id";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
-        }
-    }
-
-    /**
-     * GET возвращать информацию о сотруднике с переданным id
-     */
-    @GetMapping("/{id}/fullinfo")
-    public Optional<Employee> mapGetBuIdEmployee(@PathVariable int id) {
-        try {
-            return employeeService.getBuIdEmployee(id);
-        } catch (Throwable t) {
-            String message = "Нет такого id";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
-        }
-    }
-
-    /**
-     * DELETE удалять сотрудника с переданным id
-     */
-    @DeleteMapping("/{id}")
-    public void deleteIdEmployee(@PathVariable int id) {
-        try {
-            employeeService.deleteByIdEmployee(id);
-        } catch (Throwable t) {
-            String message = "Нет такого id";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
-
-        }
-    }
-
-////////////////*
     /**
      * GET  возвращать самой высокой зарплатой
      */
     @GetMapping("withHighestSalary")
-    public List<Employee> withHighestSalary(@RequestParam(value = "salary",required = false) Integer salary) {
+    public List<Employee> withHighestSalary(@RequestParam(value = "salary", required = false) Integer salary) {
         return employeeService.employeeHighSalary(salary);
     }
 
     /**
      * GET возвращать информацию о сотруднике с переданным position
      */
-    @GetMapping( params = "position")
+    @GetMapping(params = "position")
     public List<EmployeeFullInfo> getBuIdEmployeePosition(@RequestParam("position") String position) {
         try {
             return employeeService.getBuPositionToEmployee(position);
         } catch (Throwable t) {
             String message = "Нет такого position";
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,message);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
         }
     }
+
     /**
      * GET возвращать полную информацию о сотруднике
-     *
      */
     @GetMapping("/full")
-    public List<EmployeeFullInfo>getFull(){return employeeService.getFull();}
+    public List<EmployeeFullInfo> getFull() {
+        return employeeService.getFull();
+    }
 
+    /**
+     * GET возвращать информацию о сотруднике с переданным id
+     */
+    @GetMapping("/{id}/fullinfo")
+
+    public List<EmployeeFullInfo> getBuIdEmployee(@PathVariable int id) {
+        try {
+            return employeeService.getBuIdEmployeeFull(id);
+        } catch (Throwable t) {
+            String message = "Нет такого id";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, message);
+        }
+    }
+
+    /**
+     * GET возвращать информацию о сотрудниках на странице.
+     */
+
+    @GetMapping("/{page}")
+    public List<Employee> getEmployeesPaging(@PathVariable int page) {
+        int size = 2;
+        return employeeService.getEmployeesPaging(page, size);
+    }
 
 }

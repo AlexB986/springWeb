@@ -13,7 +13,7 @@ public class Employee {
     private String name;
     @Column(name = "salary")
     private Integer salary;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "position_id")
     private Position position;
 

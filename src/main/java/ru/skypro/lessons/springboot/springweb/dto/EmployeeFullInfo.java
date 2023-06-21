@@ -1,14 +1,24 @@
 package ru.skypro.lessons.springboot.springweb.dto;
 
 public class EmployeeFullInfo {
+    private Integer id;
     private String name;
     private Integer salary;
     private String positionRole;
 
-    public EmployeeFullInfo(String name, Integer salary, String positionRole) {
+    public EmployeeFullInfo(Integer id,String name, Integer salary, String positionRole) {
+        this.id = id;
         this.name = name;
         this.salary = salary;
         this.positionRole = positionRole;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

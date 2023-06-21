@@ -1,5 +1,6 @@
 package ru.skypro.lessons.springboot.springweb.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -23,7 +24,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
      */
 
     @Query("SELECT new ru.skypro.lessons.springboot.springweb.dto. " +
-            "EmployeeFullInfo(e.name , e.salary , p.role) " +
+            "EmployeeFullInfo(e.id,e.name , e.salary , p.role) " +
             "FROM Employee e join fetch Position p " +
             "WHERE e.position = p")
     List<EmployeeFullInfo> getFullEmployee();
@@ -31,9 +32,21 @@ public interface EmployeeRepository extends CrudRepository<Employee, Integer> {
     /**
      * GET возвращать информацию о сотруднике с переданным position
      */
-    @Query("SELECT new ru.skypro.lessons.springboot.springweb.dto. " +
-            "EmployeeFullInfo(e.name , e.salary , p.role) " +
-            "FROM Employee e  JOIN FETCH Position p " +
-            "WHERE p.role = :role")
+
+    @Query("SELECT new ru.skypro.lessons.springboot.springweb.dto." +
+            "EmployeeFullInfo(e.id,e.name , e.salary , p.role) " +
+            "FROM Employee e JOIN FETCH Position p " +
+            "WHERE e.position= p AND p.role = :role")
     List<EmployeeFullInfo> buPositionToEmployee(String role);
+    /**
+     * GET возвращать информацию о сотруднике с переданным id
+     */
+    @Query("SELECT new ru.skypro.lessons.springboot.springweb.dto." +
+            "EmployeeFullInfo(e.id,e.name , e.salary , p.role) " +
+            "FROM Employee e  JOIN FETCH Position p " +
+            "WHERE e.position = p AND e.id = :id")
+    List<EmployeeFullInfo>buIdEmployeeINfo(int id);
+
 }
+
+
